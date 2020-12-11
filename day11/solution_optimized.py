@@ -13,7 +13,7 @@ def count_occupied(seats, coords):
     return [seats[i][j] for i, j in coords].count('#')
 
 def part1(seats):
-    def find_neighbors(seats, r, c):
+    def find_neighbors(r, c):
         neighbors = []
         for dr, dc in NEIGHBORS:
             i, j = r + dr, c + dc
@@ -21,18 +21,19 @@ def part1(seats):
                 neighbors.append((i, j))
         return neighbors
     
+    neighbors = [[find_neighbors(i, j) for j in range(COLS)] for i in range(ROWS)]
+    
     def update(seats, coords):
         unstable_coords = set()
         updates = []
         for i, j in coords:
-            neighbors = find_neighbors(seats, i, j)
-            occupied = count_occupied(seats, neighbors)
+            occupied = count_occupied(seats, neighbors[i][j])
             if seats[i][j] == 'L' and occupied == 0:
                 updates.append((i, j, '#'))
-                unstable_coords.update(neighbors)
+                unstable_coords.update(neighbors[i][j])
             elif seats[i][j] == '#' and occupied >= 4:
                 updates.append((i, j, 'L'))
-                unstable_coords.update(neighbors)
+                unstable_coords.update(neighbors[i][j])
         for i, j, val in updates:
             seats[i][j] = val
         return unstable_coords
@@ -45,7 +46,7 @@ def part1(seats):
     return sum(r.count('#') for r in seats)
 
 def part2(seats):
-    def find_los_neighbors(seats, r, c):
+    def find_los_neighbors(r, c):
         neighbors = []
         for dr, dc in NEIGHBORS:
             i, j = r + dr, c + dc
@@ -54,19 +55,20 @@ def part2(seats):
             if is_valid(i, j):
                 neighbors.append((i, j))
         return neighbors
+    
+    neighbors = [[find_los_neighbors(i, j) for j in range(COLS)] for i in range(ROWS)]
 
     def update(seats, coords):
         unstable_coords = set()
         updates = []
         for i, j in coords:
-            neighbors = find_los_neighbors(seats, i, j)
-            occupied = count_occupied(seats, neighbors)
+            occupied = count_occupied(seats, neighbors[i][j])
             if seats[i][j] == 'L' and occupied == 0:
                 updates.append((i, j, '#'))
-                unstable_coords.update(neighbors)
+                unstable_coords.update(neighbors[i][j])
             elif seats[i][j] == '#' and occupied >= 5:
                 updates.append((i, j, 'L'))
-                unstable_coords.update(neighbors)
+                unstable_coords.update(neighbors[i][j])
         for i, j, val in updates:
             seats[i][j] = val
         return unstable_coords
