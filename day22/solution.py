@@ -14,7 +14,7 @@ def part1(p1, p2):
             p2.append(p1.popleft())
     return score(p1 if p1 else p2)
 
-def part2(p1, p2):    
+def part2(p1, p2):
     def play(p1, p2):
         p1, p2 = deque(p1), deque(p2)
         seen_states = set()
