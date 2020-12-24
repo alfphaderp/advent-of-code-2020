@@ -1,19 +1,17 @@
-class CDLLNode:
+class CLLNode:
     def __init__(self, val):
         self.val = val
 
 class Cups:
     def __init__(self, nums):
-        head = CDLLNode(nums[0])
+        head = CLLNode(nums[0])
         self.access = {nums[0]: head}
         tail = head
         for i in range(1, len(nums)):
-            tail.next = CDLLNode(nums[i])
-            tail.next.prev = tail
+            tail.next = CLLNode(nums[i])
             self.access[nums[i]] = tail.next
             tail = tail.next
         tail.next = head
-        head.prev = tail
         self.biggest = max(nums)
     
     def find_target(self, start_num, triplet):
